@@ -2,10 +2,10 @@
 Stazione meteo creata con il kit di Sparkfun 'weatherbit', i dati sono inviati con l'estensione wifibit (ESP8266) a ThingSpeak e scaricabili in formato aperto.
 
 # Risorse hardware utilizzate:
-microclimate kit: https://www.sparkfun.com/products/16274 /n
-WiFibit: https://e-radionica.com/en/wifi-bit.html /n
-2 x microbit: https://www.robotics-3d.com/microbit/6024-micro-bit.html /n
-Screen LCD per microbit: https://kitronik.co.uk/products/5650-view-text32-lcd-screen-for-the-bbc-micro-bit /n
+microclimate kit: https://www.sparkfun.com/products/16274
+WiFibit: https://e-radionica.com/en/wifi-bit.html
+2 x microbit: https://www.robotics-3d.com/microbit/6024-micro-bit.html
+Screen LCD per microbit: https://kitronik.co.uk/products/5650-view-text32-lcd-screen-for-the-bbc-micro-bit
 
 # Risorse software utilizzate:
 MakeCode: https://makecode.microbit.org/
