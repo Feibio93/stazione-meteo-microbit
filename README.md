@@ -1,5 +1,5 @@
 # Stazione meteo con micro:bit
-Stazione meteo creata con il kit di Sparkfun 'weatherbit', i dati sono inviati con l'estensione wifibit (ESP8266) a ThingSpeak e scaricabili in formato aperto.
+Stazione meteo creata con il kit di Sparkfun 'weatherbit', i dati sono inviati con l'estensione wifibit (ESP8266) a ThingSpeak e sono visualizzabili e scaricabili in formato aperto: https://thingspeak.com/channels/1243605
 
 Risorse hardware utilizzate:  
 microclimate kit: https://www.sparkfun.com/products/16274  
