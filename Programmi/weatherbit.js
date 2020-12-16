@@ -14,7 +14,7 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
         } else if (Direzione_vento[i] == "S") {
             Indice2 = 1
         } else if (Direzione_vento[i] == "E") {
-                Indice2 = 2
+            Indice2 = 2
         } else if (Direzione_vento[i] == "W") {
             Indice2 = 3
         } else if (Direzione_vento[i] == "NE") {
