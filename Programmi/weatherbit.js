@@ -7,57 +7,53 @@ enum RadioMessage {
     Pioggia = 58249
 }
 function Media_direzione_vento (Inizio: number, Fine: number) {
-    Indice_ogni_5_minuti = Inizio
     for (let i = 0; i < Fine; i++) {
-        // N S E W NE NW SE SW
-        Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0]
-        for (let j = 0; j < Indice_ogni_5_minuti; j++) {
-            if (Direzione_vento[j] == "N") {
-                Indice2 = 0
-            } else if (Direzione_vento[j] == "S") {
-                Indice2 = 1
-            } else if (Direzione_vento[j] == "E") {
+        Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0] // N S E W NE NW SE SW
+        if (Direzione_vento[i] == "N") {
+            Indice2 = 0
+        } else if (Direzione_vento[i] == "S") {
+            Indice2 = 1
+        } else if (Direzione_vento[i] == "E") {
                 Indice2 = 2
-            } else if (Direzione_vento[j] == "W") {
-                Indice2 = 3
-            } else if (Direzione_vento[j] == "NE") {
-                Indice2 = 4
-            } else if (Direzione_vento[j] == "NW") {
-                Indice2 = 5
-            } else if (Direzione_vento[j] == "SE") {
-                Indice2 = 6
-            } else if (Direzione_vento[j] == "SW") {
-                Indice2 = 7
-            }
-            Conta_direzioni_vento.insertAt(Indice2, Conta_direzioni_vento[Indice2] + 1)
+        } else if (Direzione_vento[i] == "W") {
+            Indice2 = 3
+        } else if (Direzione_vento[i] == "NE") {
+            Indice2 = 4
+        } else if (Direzione_vento[i] == "NW") {
+            Indice2 = 5
+        } else if (Direzione_vento[i] == "SE") {
+            Indice2 = 6
+        } else if (Direzione_vento[i] == "SW") {
+            Indice2 = 7
         }
-        Indice2 = Conta_direzioni_vento[0]
-        for (let i = 0; i <= 7; i++) {
-            if (Conta_direzioni_vento[i] > Indice2) {
-                Indice2 = Conta_direzioni_vento[i]
-            }
-        }
-        Indice = Conta_direzioni_vento.indexOf(Indice2)
-        if (Indice == 0) {
-            Dato_direzione_vento = "N"
-        } else if (Indice == 1) {
-            Dato_direzione_vento = "S"
-        } else if (Indice == 2) {
-            Dato_direzione_vento = "E"
-        } else if (Indice == 3) {
-            Dato_direzione_vento = "W"
-        } else if (Indice == 4) {
-            Dato_direzione_vento = "NE"
-        } else if (Indice == 5) {
-            Dato_direzione_vento = "NW"
-        } else if (Indice == 6) {
-            Dato_direzione_vento = "SE"
-        } else if (Indice == 7) {
-            Dato_direzione_vento = "SW"
-        }
-        Direzione_vento = []
-        Salva_direzione_vento.push(Dato_direzione_vento)
+        Conta_direzioni_vento.insertAt(Indice2, Conta_direzioni_vento[Indice2] + 1)
     }
+    Indice2 = Conta_direzioni_vento[0]
+    for (let i = 0; i <= 7; i++) {
+        if (Conta_direzioni_vento[i] > Indice2) {
+            Indice2 = Conta_direzioni_vento[i]
+        }
+    }
+    Indice = Conta_direzioni_vento.indexOf(Indice2)
+    if (Indice == 0) {
+        Dato_direzione_vento = "N"
+    } else if (Indice == 1) {
+        Dato_direzione_vento = "S"
+    } else if (Indice == 2) {
+        Dato_direzione_vento = "E"
+    } else if (Indice == 3) {
+        Dato_direzione_vento = "W"
+    } else if (Indice == 4) {
+        Dato_direzione_vento = "NE"
+    } else if (Indice == 5) {
+        Dato_direzione_vento = "NW"
+    } else if (Indice == 6) {
+        Dato_direzione_vento = "SE"
+    } else if (Indice == 7) {
+        Dato_direzione_vento = "SW"
+    }
+    Direzione_vento = []
+    Salva_direzione_vento.push(Dato_direzione_vento)
 }
 function Azzera_array () {
     Salva_su_scheda_SD()
@@ -130,14 +126,14 @@ radio.onReceivedMessage(RadioMessage.Umidita, function () {
     radio.sendValue("HA", Umidita_aria[Umidita_aria.length - 1])
 })
 let Contatore_vento = 0
+let Contatore = 0
 let Timestamp = 0
 let Tempo = 0
 let Indice = 0
+let Indice2 = 0
+let Vento = 0
 let Dato_direzione_vento = ""
 let Conta_direzioni_vento: number[] = []
-let Indice2 = 0
-let Indice_ogni_5_minuti = 0
-let Vento = 0
 let Salva_direzione_vento: string[] = []
 let Salva_velocita_vento: number[] = []
 let Direzione_vento: string[] = []
@@ -152,19 +148,6 @@ let Pioggia_caduta: number[] = []
 radio.setTransmitPower(7)
 radio.setGroup(93)
 led.enable(false)
-Pioggia_caduta = []
-Temperatura_aria = []
-Umidita_aria = []
-Temperatura_terreno = []
-Umidita_terreno = []
-Pressione = []
-Altitudine = []
-Velocita_vento = []
-Direzione_vento = []
-Salva_velocita_vento = []
-Salva_direzione_vento = []
-Vento = 0
-let Contatore = 0
 serial.redirect(SerialPin.P15, SerialPin.P14, 9600)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
