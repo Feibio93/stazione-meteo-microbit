@@ -67,19 +67,6 @@ function Azzera_array () {
     Salva_direzione_vento = []
     Salva_velocita_vento = []
 }
-input.onButtonPressed(Button.A, function () {
-    led.enable(true)
-    basic.showString("VEL VENTO:")
-    for (let i = 0; i <= Velocita_vento.length - 1; i++) {
-        basic.showNumber(Velocita_vento[i])
-    }
-    basic.showString("DIR VENTO:")
-    for (let i = 0; i <= Direzione_vento.length - 1; i++) {
-        basic.showString(Direzione_vento[i])
-    }
-    basic.clearScreen()
-    led.enable(false)
-})
 function Salva_su_scheda_SD () {
     for (let i=0; i < Temperatura_aria.length()-1; i++) {
 	    serial.writeValue("Temperatura aria", Temperatura_aria[i])
@@ -178,6 +165,19 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
             radio.sendValue("PITS", Pioggia_caduta[Pioggia_caduta.length - 1])
         }
     }
+})
+input.onButtonPressed(Button.A, function () {
+    led.enable(true)
+    basic.showString("VEL VENTO:")
+    for (let i = 0; i <= Velocita_vento.length - 1; i++) {
+        basic.showNumber(Velocita_vento[i])
+    }
+    basic.showString("DIR VENTO:")
+    for (let i = 0; i <= Direzione_vento.length - 1; i++) {
+        basic.showString(Direzione_vento[i])
+    }
+    basic.clearScreen()
+    led.enable(false)
 })
 let Contatore_vento = 0
 let Contatore = 0
