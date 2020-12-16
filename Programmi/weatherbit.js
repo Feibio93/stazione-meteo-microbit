@@ -74,12 +74,12 @@ function Azzera_array () {
 input.onButtonPressed(Button.A, function () {
     led.enable(true)
     basic.showString("VEL VENTO:")
-    for (let Indice = 0; Indice <= Velocita_vento.length - 1; Indice++) {
-        basic.showNumber(Velocita_vento[Indice])
+    for (let i = 0; i <= Velocita_vento.length - 1; i++) {
+        basic.showNumber(Velocita_vento[i])
     }
     basic.showString("DIR VENTO:")
-    for (let Indice2 = 0; Indice2 <= Direzione_vento.length - 1; Indice2++) {
-        basic.showString("" + (Direzione_vento[Indice2]))
+    for (let i = 0; i <= Direzione_vento.length - 1; i++) {
+        basic.showString(Direzione_vento[i])
     }
     basic.clearScreen()
     led.enable(false)
