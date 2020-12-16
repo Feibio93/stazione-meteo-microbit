@@ -57,7 +57,6 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
 }
 function Azzera_array () {
     Salva_su_scheda_SD()
-    Altitudine = []
     Pioggia_caduta = []
     Pressione = []
     Temperatura_aria = []
@@ -85,9 +84,6 @@ function Salva_su_scheda_SD () {
     }
     for (let i=0; i < Pressione.length()-1; i++) {
 	    serial.writeValue("Pressione", Pressione[i])
-    }
-    for (let i=0; i < Altitudine.length()-1; i++) {
-	    serial.writeValue("Altitudine", Altitudine[i])
     }
     if (Pioggia_caduta.length() > 1) {
         for (let i=0; i < Pioggia_caduta.length()-1; i++) {
@@ -117,7 +113,7 @@ radio.onReceivedMessage(RadioMessage.Vento, function () {
     radio.sendNumber(Tempo)
     basic.pause(200)
     radio.sendValue("VV", Velocita_vento[Velocita_vento.length - 1])
-    basic.pause(100)
+    basic.pause(200)
     radio.sendString(Direzione_vento[Direzione_vento.length - 1])
 })
 radio.onReceivedMessage(RadioMessage.Pressione, function () {
@@ -125,8 +121,6 @@ radio.onReceivedMessage(RadioMessage.Pressione, function () {
     radio.sendNumber(Tempo)
     basic.pause(200)
     radio.sendValue("PR", Pressione[Pressione.length - 1])
-    basic.pause(100)
-    radio.sendValue("AL", Altitudine[Altitudine.length - 1])
 })
 radio.onReceivedMessage(RadioMessage.Pioggia, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
@@ -155,8 +149,6 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
         radio.sendValue("HTTS", Umidita_terreno[Umidita_terreno.length - 1])
         basic.pause(200)
         radio.sendValue("HATS", Umidita_aria[Umidita_aria.length - 1])
-        basic.pause(200)
-        radio.sendValue("ALTS", Altitudine[Altitudine.length - 1])
         basic.pause(200)
         radio.sendValue("PRTS", Pressione[Pressione.length - 1])
         basic.pause(200)
@@ -192,7 +184,6 @@ let Salva_direzione_vento: string[] = []
 let Salva_velocita_vento: number[] = []
 let Direzione_vento: string[] = []
 let Velocita_vento: number[] = []
-let Altitudine: number[] = []
 let Pressione: number[] = []
 let Umidita_terreno: number[] = []
 let Temperatura_terreno: number[] = []
@@ -219,14 +210,10 @@ basic.forever(function () {
         Pressione.pop()
     }
     if (convertToText(Pressione[Pressione.length - 1]).length > 8) {
-        Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 100)
-    }
-    Altitudine.push(weatherbit.altitude())
-    if (convertToText(Altitudine[Altitudine.length - 1]) == "NaN") {
-        Altitudine.pop()
+        Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 10000)
     }
     Direzione_vento.push(weatherbit.windDirection())
-    if (Direzione_vento[Direzione_vento.length - 1] == "null") {
+    if (Direzione_vento[Direzione_vento.length - 1] == "???") {
         Direzione_vento.pop()
     }
     /* Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
