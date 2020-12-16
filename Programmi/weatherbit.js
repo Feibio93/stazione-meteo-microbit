@@ -165,6 +165,7 @@ Salva_velocita_vento = []
 Salva_direzione_vento = []
 Vento = 0
 let Contatore = 0
+serial.redirect(SerialPin.P15, SerialPin.P14, 9600)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
     weatherbit.startWindMonitoring()
