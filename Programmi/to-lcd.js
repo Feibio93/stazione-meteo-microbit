@@ -119,13 +119,13 @@ input.onButtonPressed(Button.B, function () {
         Timestamp = 0
         basic.pause(500)
         if (Posizione == 4) {
-            Kitronik_VIEWTEXT32.showString("" + Valore_1 + " " + Direzione_vento)
+            Kitronik_VIEWTEXT32.showString(Valore_1 + Direzione_vento)
         } else if (Posizione == 3) {
             Kitronik_VIEWTEXT32.showString(Valore_1)
         } else if (Posizione == 0) {
             Kitronik_VIEWTEXT32.showString(Valore_1)
         } else {
-            Kitronik_VIEWTEXT32.showString("" + Valore_1 + " " + Valore_2)
+            Kitronik_VIEWTEXT32.showString(Valore_1 + Valore_2)
         }
         basic.pause(5000)
         Valore_1 = ""
