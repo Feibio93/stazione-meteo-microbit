@@ -146,8 +146,6 @@ let Posizione = 0
 let Timestamp = 0
 led.enable(true)
 led.setBrightness(20)
-Timestamp = 0
-Posizione = 0
 Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
 radio.setTransmitPower(7)
 radio.setGroup(93)
