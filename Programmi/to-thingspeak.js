@@ -31,9 +31,6 @@ radio.onReceivedValue(function (name, value) {
     if (name == "HATS") {
         Umidita_aria = value
     }
-    if (name == "ALTS") {
-        Altitudine = value
-    }
     if (name == "PITS") {
         Pioggia_caduta = value
     }
@@ -45,19 +42,18 @@ let Umidita_aria = 0
 let Temperatura_terreno = 0
 let Temperatura_aria = 0
 let Pressione = 0
-let Altitudine = 0
 WiFiBit.connectToWiFiBit()
-ESP8266_IoT.connectWifi("WiFi", "Password")
+ESP8266_IoT.connectWifi("WiFi EOLO", "")
 led.setBrightness(10)
 radio.setGroup(93)
 radio.setTransmitPower(7)
-Altitudine = 8888
 Pressione = 8888
 Temperatura_aria = 8888
 Temperatura_terreno = 8888
 Umidita_aria = 8888
 Umidita_terreno = 8888
 Velocita_vento = 8888
+Pioggia_caduta = 8888
 basic.forever(function () {
     if (ESP8266_IoT.wifiState(true)) {
         basic.showIcon(IconNames.Yes)
@@ -67,7 +63,7 @@ basic.forever(function () {
             basic.showIcon(IconNames.Heart)
             radio.sendMessage(RadioMessage.Thingspeak)
             basic.pause(2000)
-            while (Altitudine == 8888 || (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888))))) {
+            while (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888)))) {
                 radio.sendMessage(RadioMessage.Thingspeak)
                 images.createImage(`
                     . . . . .
@@ -78,15 +74,14 @@ basic.forever(function () {
                     `).scrollImage(1, 200)
                 basic.pause(2000)
             }
-            if (!(Altitudine == 8888) && (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888)))))) {
-                if (!(Pioggia_caduta == 0)) {
+            if (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
+                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {
                     ESP8266_IoT.setData(
                     "V86IPBJF1RRLAVR5",
                     Temperatura_aria,
                     Umidita_aria,
                     Umidita_terreno,
                     Velocita_vento,
-                    Altitudine,
                     Pressione,
                     Pioggia_caduta
                     )
@@ -97,7 +92,6 @@ basic.forever(function () {
                     Umidita_aria,
                     Umidita_terreno,
                     Velocita_vento,
-                    Altitudine,
                     Pressione
                     )
                 }
@@ -107,7 +101,6 @@ basic.forever(function () {
                     basic.showIcon(IconNames.Happy)
                     basic.pause(2000)
                     basic.clearScreen()
-                    Altitudine = 8888
                     Pressione = 8888
                     Temperatura_aria = 8888
                     Umidita_aria = 8888
@@ -124,7 +117,7 @@ basic.forever(function () {
         }
     } else {
         basic.showIcon(IconNames.No)
-        ESP8266_IoT.connectWifi("WiFi", "Password")
+        ESP8266_IoT.connectWifi("WiFi EOLO", "")
         basic.clearScreen()
     }
 })
