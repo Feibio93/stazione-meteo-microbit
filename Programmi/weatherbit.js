@@ -125,6 +125,60 @@ radio.onReceivedMessage(RadioMessage.Umidita, function () {
     basic.pause(200)
     radio.sendValue("HA", Umidita_aria[Umidita_aria.length - 1])
 })
+radio.onReceivedMessage(RadioMessage.Vento, function () {
+    Tempo = Math.round(control.millis() / 1000 - Timestamp)
+    radio.sendNumber(Tempo)
+    basic.pause(200)
+    radio.sendValue("VV", Velocita_vento[Velocita_vento.length - 1])
+    basic.pause(100)
+    radio.sendString(Direzione_vento[Direzione_vento.length - 1])
+})
+radio.onReceivedMessage(RadioMessage.Pressione, function () {
+    Tempo = Math.round(control.millis() / 1000 - Timestamp)
+    radio.sendNumber(Tempo)
+    basic.pause(200)
+    radio.sendValue("PR", Pressione[Pressione.length - 1])
+    basic.pause(100)
+    radio.sendValue("AL", Altitudine[Altitudine.length - 1])
+})
+radio.onReceivedMessage(RadioMessage.Pioggia, function () {
+    Tempo = Math.round(control.millis() / 1000 - Timestamp)
+    radio.sendNumber(Tempo)
+    basic.pause(200)
+    if (Pioggia_caduta.length == 0) {
+        radio.sendValue("PI", 0)
+    } else {
+        radio.sendValue("PI", Pioggia_caduta[Pioggia_caduta.length - 1])
+    }
+})
+radio.onReceivedMessage(RadioMessage.Temperatura, function () {
+    Tempo = Math.round(control.millis() / 1000 - Timestamp)
+    radio.sendNumber(Tempo)
+    //basic.pause(200)
+    //radio.sendValue("TT", Temperatura_terreno[Temperatura_terreno.length - 1])
+    basic.pause(100)
+    radio.sendValue("TA", Temperatura_aria[Temperatura_aria.length - 1])
+})
+radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
+    if (Contatore > 0) {
+        //radio.sendValue("TTTS", Temperatura_terreno[Temperatura_terreno.length - 1])
+        //basic.pause(500)
+        radio.sendValue("TATS", Temperatura_aria[Temperatura_aria.length - 1])
+        basic.pause(200)
+        radio.sendValue("HTTS", Umidita_terreno[Umidita_terreno.length - 1])
+        basic.pause(200)
+        radio.sendValue("HATS", Umidita_aria[Umidita_aria.length - 1])
+        basic.pause(200)
+        radio.sendValue("ALTS", Altitudine[Altitudine.length - 1])
+        basic.pause(200)
+        radio.sendValue("PRTS", Pressione[Pressione.length - 1])
+        basic.pause(200)
+        radio.sendValue("VVTS", Velocita_vento[Velocita_vento.length - 1])
+        if (Umidita_aria[Umidita_aria.length - 1] > 85) {
+            radio.sendValue("PITS", Pioggia_caduta[Pioggia_caduta.length - 1])
+        }
+    }
+})
 let Contatore_vento = 0
 let Contatore = 0
 let Timestamp = 0
@@ -175,13 +229,13 @@ basic.forever(function () {
     if (Direzione_vento[Direzione_vento.length - 1] == "null") {
         Direzione_vento.pop()
     }
-    // Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-    // if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
-    // while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
-    // Temperatura_terreno.pop()
-    // Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-    // }
-    // }
+    /* Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
+     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
+     while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
+     Temperatura_terreno.pop()
+     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
+     }
+    }*/
     Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
         Umidita_terreno.pop()
