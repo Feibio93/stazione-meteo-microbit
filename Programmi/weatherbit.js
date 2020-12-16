@@ -7,7 +7,7 @@ enum RadioMessage {
     Pioggia = 58249
 }
 function Media_direzione_vento (Inizio: number, Fine: number) {
-    for (let i = 0; i < Fine; i++) {
+    for (let i = Inizio; i < Fine; i++) {
         Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0] // N S E W NE NW SE SW
         if (Direzione_vento[i] == "N") {
             Indice2 = 0
@@ -96,7 +96,7 @@ function Salva_su_scheda_SD () {
     }
 }
 function Media_velocita_vento (Inizio: number, Fine: number) {
-    for (let i = 0; i < Fine; i++) {
+    for (let i = Inizio; i < Fine; i++) {
         Vento = Vento + Velocita_vento[i]
     }
     Vento = Vento / (Fine + 1)
