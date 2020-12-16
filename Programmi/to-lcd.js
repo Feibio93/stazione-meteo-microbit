@@ -11,6 +11,45 @@ enum RadioMessage {
 radio.onReceivedNumber(function (receivedNumber) {
     Timestamp = receivedNumber
 })
+radio.onReceivedString(function (receivedString) {
+    if (receivedString.length < 3 && (receivedString.includes("N") || (receivedString.includes("S") || (receivedString.includes("W") || receivedString.includes("E"))))) {
+        Direzione_vento = "DIREZIONE: " + receivedString
+    }
+})
+radio.onReceivedValue(function (name, value) {
+    if (name == "TT") {
+        Valore_1 = "TERRA: " + value + " C"
+        Temperatura_terreno = value
+    }
+    if (name == "HT") {
+        Valore_1 = "TERRA: " + value + "%    "
+        Umidita_terreno = value
+    }
+    if (name == "VV") {
+        Valore_1 = "VEL: " + value + " km/h"
+        Velocita_vento = value
+    }
+    if (name == "PR") {
+        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 9) + " Pa"
+        Pressione = value
+    }
+    if (name == "TA") {
+        Valore_2 = "ARIA: " + value + " C"
+        Temperatura_aria = value
+    }
+    if (name == "HA") {
+        Valore_2 = "ARIA: " + value + "%"
+        Umidita_aria = value
+    }
+    if (name == "PI") {
+        if (value == 0) {
+            Valore_1 = "...non piove!"
+        } else {
+            Valore_1 = "PIOGGIA CADUTA: " + value + " millimetri"
+            Pioggia_caduta = value
+        }
+    }
+})
 input.onButtonPressed(Button.A, function () {
     if (Posizione == 0) {
         Kitronik_VIEWTEXT32.showString("Cosa si cerca? " + "TEMPERATURA")
@@ -33,11 +72,6 @@ input.onButtonPressed(Button.AB, function () {
     Kitronik_VIEWTEXT32.clearDisplay()
     Posizione = 0
     Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
-})
-radio.onReceivedString(function (receivedString) {
-    if (receivedString.length < 3 && (receivedString.includes("N") || (receivedString.includes("S") || (receivedString.includes("W") || receivedString.includes("E"))))) {
-        Direzione_vento = "DIREZIONE: " + receivedString
-    }
 })
 input.onButtonPressed(Button.B, function () {
     Kitronik_VIEWTEXT32.clearDisplay()
@@ -88,8 +122,6 @@ input.onButtonPressed(Button.B, function () {
             Kitronik_VIEWTEXT32.showString("" + Valore_1 + " " + Direzione_vento)
         } else if (Posizione == 3) {
             Kitronik_VIEWTEXT32.showString(Valore_1)
-            basic.pause(4000)
-            Kitronik_VIEWTEXT32.showString(Valore_2)
         } else if (Posizione == 0) {
             Kitronik_VIEWTEXT32.showString(Valore_1)
         } else {
@@ -100,46 +132,7 @@ input.onButtonPressed(Button.B, function () {
         Valore_2 = ""
     }
 })
-radio.onReceivedValue(function (name, value) {
-    if (name == "TT") {
-        Valore_1 = "TERRA: " + value + " C"
-        Temperatura_terreno = value
-    }
-    if (name == "HT") {
-        Valore_1 = "TERRA: " + value + "%    "
-        Umidita_terreno = value
-    }
-    if (name == "VV") {
-        Valore_1 = "VEL: " + value + " km/h"
-        Velocita_vento = value
-    }
-    if (name == "PR") {
-        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 9) + " Pa"
-        Pressione = value
-    }
-    if (name == "TA") {
-        Valore_2 = "ARIA: " + value + " C"
-        Temperatura_aria = value
-    }
-    if (name == "HA") {
-        Valore_2 = "ARIA: " + value + "%"
-        Umidita_aria = value
-    }
-    if (name == "AL") {
-        Valore_2 = "ALTITUDINE:    " + value + " metri"
-        Altitudine = value
-    }
-    if (name == "PI") {
-        if (value == 0) {
-            Valore_1 = "...non piove!"
-        } else {
-            Valore_1 = "PIOGGIA CADUTA: " + value + " millimetri"
-            Pioggia_caduta = value
-        }
-    }
-})
 let Pioggia_caduta = 0
-let Altitudine = 0
 let Umidita_aria = 0
 let Temperatura_aria = 0
 let Pressione = 0
