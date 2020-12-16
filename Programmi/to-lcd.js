@@ -104,7 +104,7 @@ input.onButtonPressed(Button.B, function () {
     if (Timestamp == 0) {
         Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
         basic.pause(1000)
-        Posizione += -1
+        Posizione -= 1
         Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
     } else {
         if (Timestamp >= 120) {
