@@ -30,7 +30,7 @@ radio.onReceivedValue(function (name, value) {
         Velocita_vento = value
     }
     if (name == "PR") {
-        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 9) + " Pa"
+        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 8) + " hPa"
         Pressione = value
     }
     if (name == "TA") {
