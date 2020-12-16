@@ -8,30 +8,28 @@ enum RadioMessage {
 }
 function Media_direzione_vento (Inizio: number, Fine: number) {
     Indice_ogni_5_minuti = Inizio
-    Indice2 = Fine
-    for (let index = 0; index < Fine; index++) {
+    for (let i = 0; i < Fine; i++) {
         // N S E W NE NW SE SW
         Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0]
-        for (let index = 0; index < Indice_ogni_5_minuti; index++) {
-            if (Direzione_vento[Indice2] == "N") {
-                Indice3 = 0
-            } else if (Direzione_vento[Indice2] == "S") {
-                Indice3 = 1
-            } else if (Direzione_vento[Indice2] == "E") {
-                Indice3 = 2
-            } else if (Direzione_vento[Indice2] == "W") {
-                Indice3 = 3
-            } else if (Direzione_vento[Indice2] == "NE") {
-                Indice3 = 4
-            } else if (Direzione_vento[Indice2] == "NW") {
-                Indice3 = 5
-            } else if (Direzione_vento[Indice2] == "SE") {
-                Indice3 = 6
-            } else if (Direzione_vento[Indice2] == "SW") {
-                Indice3 = 7
+        for (let j = 0; j < Indice_ogni_5_minuti; j++) {
+            if (Direzione_vento[j] == "N") {
+                Indice2 = 0
+            } else if (Direzione_vento[j] == "S") {
+                Indice2 = 1
+            } else if (Direzione_vento[j] == "E") {
+                Indice2 = 2
+            } else if (Direzione_vento[j] == "W") {
+                Indice2 = 3
+            } else if (Direzione_vento[j] == "NE") {
+                Indice2 = 4
+            } else if (Direzione_vento[j] == "NW") {
+                Indice2 = 5
+            } else if (Direzione_vento[j] == "SE") {
+                Indice2 = 6
+            } else if (Direzione_vento[j] == "SW") {
+                Indice2 = 7
             }
-            Conta_direzioni_vento.insertAt(Indice3, Conta_direzioni_vento[Indice3] + 1)
-            Indice2 += -1
+            Conta_direzioni_vento.insertAt(Indice2, Conta_direzioni_vento[Indice2] + 1)
         }
         Indice2 = Conta_direzioni_vento[0]
         for (let i = 0; i <= 7; i++) {
@@ -39,22 +37,22 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
                 Indice2 = Conta_direzioni_vento[i]
             }
         }
-        Indice3 = Conta_direzioni_vento.indexOf(Indice2)
-        if (Indice3 == 0) {
+        Indice = Conta_direzioni_vento.indexOf(Indice2)
+        if (Indice == 0) {
             Dato_direzione_vento = "N"
-        } else if (Indice3 == 1) {
+        } else if (Indice == 1) {
             Dato_direzione_vento = "S"
-        } else if (Indice3 == 2) {
+        } else if (Indice == 2) {
             Dato_direzione_vento = "E"
-        } else if (Indice3 == 3) {
+        } else if (Indice == 3) {
             Dato_direzione_vento = "W"
-        } else if (Indice3 == 4) {
+        } else if (Indice == 4) {
             Dato_direzione_vento = "NE"
-        } else if (Indice3 == 5) {
+        } else if (Indice == 5) {
             Dato_direzione_vento = "NW"
-        } else if (Indice3 == 6) {
+        } else if (Indice == 6) {
             Dato_direzione_vento = "SE"
-        } else if (Indice3 == 7) {
+        } else if (Indice == 7) {
             Dato_direzione_vento = "SW"
         }
         Direzione_vento = []
@@ -71,7 +69,7 @@ function Azzera_array () {
     Umidita_aria = []
     Umidita_terreno = []
     Salva_direzione_vento = []
-    Salva_velocità_vento = []
+    Salva_velocita_vento = []
 }
 input.onButtonPressed(Button.A, function () {
     led.enable(true)
@@ -96,8 +94,8 @@ function Salva_su_scheda_SD () {
     for (let i=0; i < Umidita_terreno.length()-1; i++) {
 	    serial.writeValue("Umidità terra", Umidita_terreno[i])
     }
-    for (let i=0; i < Salva_velocità_vento.length()-1; i++) {
-	    serial.writeValue("Velocità vento", Salva_velocità_vento[i])
+    for (let i=0; i < Salva_velocita_vento.length()-1; i++) {
+	    serial.writeValue("Velocità vento", Salva_velocita_vento[i])
     }
     for (let i=0; i < Salva_direzione_vento.length()-1; i++) {
 	    serial.writeString(Salva_direzione_vento[i])
@@ -114,15 +112,13 @@ function Salva_su_scheda_SD () {
         }
     }
 }
-function Media_velocità_vento (Inizio: number, Fine: number) {
-    Indice = Inizio
-    for (let index = 0; index < Fine; index++) {
-        Vento = Vento + Velocita_vento[Indice]
-        Indice += -1
+function Media_velocita_vento (Inizio: number, Fine: number) {
+    for (let i = 0; i < Fine; i++) {
+        Vento = Vento + Velocita_vento[i]
     }
     Vento = Vento / (Fine + 1)
     Velocita_vento = []
-    Salva_velocità_vento.push(Vento)
+    Salva_velocita_vento.push(Vento)
     Vento = 0
 }
 radio.onReceivedMessage(RadioMessage.Umidita, function () {
@@ -138,13 +134,12 @@ let Timestamp = 0
 let Tempo = 0
 let Indice = 0
 let Dato_direzione_vento = ""
-let Indice3 = 0
 let Conta_direzioni_vento: number[] = []
 let Indice2 = 0
 let Indice_ogni_5_minuti = 0
 let Vento = 0
 let Salva_direzione_vento: string[] = []
-let Salva_velocità_vento: number[] = []
+let Salva_velocita_vento: number[] = []
 let Direzione_vento: string[] = []
 let Velocita_vento: number[] = []
 let Altitudine: number[] = []
@@ -166,7 +161,7 @@ Pressione = []
 Altitudine = []
 Velocita_vento = []
 Direzione_vento = []
-Salva_velocità_vento = []
+Salva_velocita_vento = []
 Salva_direzione_vento = []
 Vento = 0
 let Contatore = 0
@@ -226,7 +221,7 @@ basic.forever(function () {
     }
     Contatore_vento += 1
     if (Contatore_vento == 150) {
-        Media_velocità_vento(0, Velocita_vento.length - 1)
+        Media_velocita_vento(0, Velocita_vento.length - 1)
         Media_direzione_vento(0, Direzione_vento.length - 1)
         Contatore_vento = 0
     }
