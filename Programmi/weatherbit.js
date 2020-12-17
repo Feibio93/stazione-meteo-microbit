@@ -9,48 +9,34 @@ enum RadioMessage {
 function Media_direzione_vento (Inizio: number, Fine: number) {
     for (let i = Inizio; i < Fine; i++) {
         Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0] // N S E W NE NW SE SW
-        if (Direzione_vento[i] == "N") {
-            Indice2 = 0
-        } else if (Direzione_vento[i] == "S") {
-            Indice2 = 1
-        } else if (Direzione_vento[i] == "E") {
-            Indice2 = 2
-        } else if (Direzione_vento[i] == "W") {
-            Indice2 = 3
-        } else if (Direzione_vento[i] == "NE") {
-            Indice2 = 4
-        } else if (Direzione_vento[i] == "NW") {
-            Indice2 = 5
-        } else if (Direzione_vento[i] == "SE") {
-            Indice2 = 6
-        } else if (Direzione_vento[i] == "SW") {
-            Indice2 = 7
+        switch (Direzione_vento[i]) {
+            case "N": Indice = 0
+            case "S": Indice = 1
+            case "E": Indice = 2
+            case "W": Indice = 3
+            case "NE": Indice = 4
+            case "NW": Indice = 5
+            case "SE": Indice = 6
+            case "SW": Indice = 7
         }
-        Conta_direzioni_vento.insertAt(Indice2, Conta_direzioni_vento[Indice2] + 1)
+        Conta_direzioni_vento.insertAt(Indice, Conta_direzioni_vento[Indice] + 1)
     }
-    Indice2 = Conta_direzioni_vento[0]
+    Indice = Conta_direzioni_vento[0]
     for (let i = 0; i <= 7; i++) {
-        if (Conta_direzioni_vento[i] > Indice2) {
-            Indice2 = Conta_direzioni_vento[i]
+        if (Conta_direzioni_vento[i] > Indice) {
+            Indice = Conta_direzioni_vento[i]
         }
     }
-    Indice = Conta_direzioni_vento.indexOf(Indice2)
-    if (Indice == 0) {
-        Dato_direzione_vento = "N"
-    } else if (Indice == 1) {
-        Dato_direzione_vento = "S"
-    } else if (Indice == 2) {
-        Dato_direzione_vento = "E"
-    } else if (Indice == 3) {
-        Dato_direzione_vento = "W"
-    } else if (Indice == 4) {
-        Dato_direzione_vento = "NE"
-    } else if (Indice == 5) {
-        Dato_direzione_vento = "NW"
-    } else if (Indice == 6) {
-        Dato_direzione_vento = "SE"
-    } else if (Indice == 7) {
-        Dato_direzione_vento = "SW"
+    Indice = Conta_direzioni_vento.indexOf(Indice)
+    switch (Indice) {
+        case 0: Dato_direzione_vento = "N"
+        case 1: Dato_direzione_vento = "S"
+        case 2: Dato_direzione_vento = "E"
+        case 3: Dato_direzione_vento = "W"
+        case 4: Dato_direzione_vento = "NE"
+        case 5: Dato_direzione_vento = "NW"
+        case 6: Dato_direzione_vento = "SE"
+        case 7: Dato_direzione_vento = "SW"
     }
     Direzione_vento = []
     Salva_direzione_vento.push(Dato_direzione_vento)
@@ -176,7 +162,6 @@ let Contatore = 0
 let Timestamp = 0
 let Tempo = 0
 let Indice = 0
-let Indice2 = 0
 let Vento = 0
 let Dato_direzione_vento = ""
 let Conta_direzioni_vento: number[] = []
@@ -227,9 +212,10 @@ basic.forever(function () {
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
         Umidita_terreno.pop()
     }
-    if (Umidita_aria[Umidita_aria.length - 1] > 85) {
-        weatherbit.startRainMonitoring()
-        Pioggia_caduta.push(Math.round(weatherbit.rain() * 25.4))
+    weatherbit.startRainMonitoring()
+    Pioggia_caduta.push(Math.round(weatherbit.rain() * 25.4))
+    if (Pioggia_caduta[Pioggia_caduta.length() - 1] == 0) {
+        Pioggia_caduta.pop()
     }
     Timestamp = Math.round(control.millis() / 1000)
     basic.pause(300000)
