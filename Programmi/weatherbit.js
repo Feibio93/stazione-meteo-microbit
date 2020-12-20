@@ -31,7 +31,7 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
         Conta_direzioni_vento.insertAt(Indice, Conta_direzioni_vento[Indice] + 1)
     }
     Indice = Conta_direzioni_vento[0]
-    for (let i = 0; i <= 7; i++) {
+    for (let i = 1; i <= 7; i++) {
         if (Conta_direzioni_vento[i] > Indice) {
             Indice = Conta_direzioni_vento[i]
         }
