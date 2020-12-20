@@ -119,8 +119,8 @@ radio.onReceivedMessage(RadioMessage.Pioggia, function () {
 radio.onReceivedMessage(RadioMessage.Temperatura, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
     radio.sendNumber(Tempo)
-    //basic.pause(200)
-    //radio.sendValue("TT", Temperatura_terreno[Temperatura_terreno.length - 1])
+    basic.pause(200)
+    radio.sendValue("TT", Temperatura_terreno[Temperatura_terreno.length - 1])
     basic.pause(100)
     radio.sendValue("TA", Temperatura_aria[Temperatura_aria.length - 1])
 })
@@ -199,7 +199,7 @@ basic.forever(function () {
         Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 10000)
     }
     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || Temperatura_terreno[Temperatura_terreno.length - 1] > 100 || Temperatura_terreno[Temperatura_terreno.length - 1] < -30) {
+     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN") {
      Temperatura_terreno.pop()
     }
     Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))
