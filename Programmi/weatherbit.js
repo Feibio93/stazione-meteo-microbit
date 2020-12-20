@@ -6,6 +6,15 @@ enum RadioMessage {
     Thingspeak = 55204,
     Pioggia = 58249
 }
+function Media_velocita_vento (Inizio: number, Fine: number) {
+    for (let i = Inizio; i < Fine; i++) {
+        Vento = Vento + Velocita_vento[i]
+    }
+    Vento = Vento / (Fine + 1)
+    Velocita_vento = []
+    Salva_velocita_vento.push(Vento)
+    Vento = 0
+}
 function Media_direzione_vento (Inizio: number, Fine: number) {
     for (let i = Inizio; i < Fine; i++) {
         Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0] // N S E W NE NW SE SW
@@ -76,15 +85,6 @@ function Salva_su_scheda_SD () {
 	        serial.writeValue("Pioggia caduta", Pioggia_caduta[i])
         }
     }
-}
-function Media_velocita_vento (Inizio: number, Fine: number) {
-    for (let i = Inizio; i < Fine; i++) {
-        Vento = Vento + Velocita_vento[i]
-    }
-    Vento = Vento / (Fine + 1)
-    Velocita_vento = []
-    Salva_velocita_vento.push(Vento)
-    Vento = 0
 }
 radio.onReceivedMessage(RadioMessage.Umidita, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
