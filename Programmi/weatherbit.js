@@ -126,8 +126,8 @@ radio.onReceivedMessage(RadioMessage.Temperatura, function () {
 })
 radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
     if (Contatore > 0) {
-        //radio.sendValue("TTTS", Temperatura_terreno[Temperatura_terreno.length - 1])
-        //basic.pause(500)
+        radio.sendValue("TTTS", Temperatura_terreno[Temperatura_terreno.length - 1])
+        basic.pause(500)
         radio.sendValue("TATS", Temperatura_aria[Temperatura_aria.length - 1])
         basic.pause(200)
         radio.sendValue("HTTS", Umidita_terreno[Umidita_terreno.length - 1])
@@ -136,8 +136,9 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
         basic.pause(200)
         radio.sendValue("PRTS", Pressione[Pressione.length - 1])
         basic.pause(200)
-        radio.sendValue("VVTS", Velocita_vento[Velocita_vento.length - 1])
-        if (Umidita_aria[Umidita_aria.length - 1] > 85) {
+        radio.sendValue("VVTS", Salva_velocita_vento[Salva_velocita_vento.length - 1])
+        basic.pause(200)
+        if (Pioggia_caduta[Pioggia_caduta.length - 1] > 0) {
             radio.sendValue("PITS", Pioggia_caduta[Pioggia_caduta.length - 1])
         }
     }
@@ -181,6 +182,7 @@ basic.clearScreen()
 led.enable(false)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
+    weatherbit.startWindMonitoring()
     Temperatura_aria.push(weatherbit.temperature() / 100)
     if (convertToText(Temperatura_aria[Temperatura_aria.length - 1]) == "NaN") {
         Temperatura_aria.pop()
@@ -196,13 +198,10 @@ basic.forever(function () {
     if (convertToText(Pressione[Pressione.length - 1]).length > 8) {
         Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 10000)
     }
-    /* Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
-     while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
+    Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
+     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || Temperatura_terreno[Temperatura_terreno.length - 1] > 100 || Temperatura_terreno[Temperatura_terreno.length - 1] < -30) {
      Temperatura_terreno.pop()
-     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-     }
-    }*/
+    }
     Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
         Umidita_terreno.pop()
@@ -221,7 +220,6 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    weatherbit.startWindMonitoring()
     Velocita_vento.push(Math.round(weatherbit.windSpeed() * 1.60934 * 100) / 100)
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
