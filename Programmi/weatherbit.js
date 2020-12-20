@@ -51,7 +51,7 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
     Salva_direzione_vento.push(Dato_direzione_vento)
 }
 function Azzera_array () {
-    //Salva_su_scheda_SD()
+    Salva_su_scheda_SD()
     Pioggia_caduta = []
     Pressione = []
     Temperatura_aria = []
