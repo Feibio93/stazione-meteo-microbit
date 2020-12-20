@@ -42,7 +42,7 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
     Salva_direzione_vento.push(Dato_direzione_vento)
 }
 function Azzera_array () {
-    Salva_su_scheda_SD()
+    //Salva_su_scheda_SD()
     Pioggia_caduta = []
     Pressione = []
     Temperatura_aria = []
@@ -95,8 +95,6 @@ radio.onReceivedMessage(RadioMessage.Umidita, function () {
     radio.sendValue("HA", Umidita_aria[Umidita_aria.length - 1])
 })
 radio.onReceivedMessage(RadioMessage.Vento, function () {
-    Tempo = Math.round(control.millis() / 1000 - Timestamp)
-    radio.sendNumber(Tempo)
     basic.pause(200)
     radio.sendValue("VV", Velocita_vento[Velocita_vento.length - 1])
     basic.pause(200)
@@ -177,8 +175,10 @@ let Temperatura_aria: number[] = []
 let Pioggia_caduta: number[] = []
 radio.setTransmitPower(7)
 radio.setGroup(93)
-led.enable(false)
 serial.redirect(SerialPin.P15, SerialPin.P14, 9600)
+basic.showIcon(IconNames.Happy)
+basic.clearScreen()
+led.enable(false)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
     weatherbit.startWindMonitoring()
@@ -196,10 +196,6 @@ basic.forever(function () {
     }
     if (convertToText(Pressione[Pressione.length - 1]).length > 8) {
         Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 10000)
-    }
-    Direzione_vento.push(weatherbit.windDirection())
-    if (Direzione_vento[Direzione_vento.length - 1] == "???") {
-        Direzione_vento.pop()
     }
     /* Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
      if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
@@ -229,6 +225,10 @@ basic.forever(function () {
     Velocita_vento.push(Math.round(weatherbit.windSpeed() * 1.60934 * 100) / 100)
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
+    }
+    Direzione_vento.push(weatherbit.windDirection())
+    if (Direzione_vento[Direzione_vento.length - 1] == "???") {
+        Direzione_vento.pop()
     }
     Contatore_vento += 1
     if (Contatore_vento == 150) {
