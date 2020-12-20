@@ -18,7 +18,7 @@ radio.onReceivedString(function (receivedString) {
 })
 radio.onReceivedValue(function (name, value) {
     if (name == "TT") {
-        Valore_1 = "TERRA: " + value + " C"
+        Valore_1 = "TERRA: " + value + " C "
         Temperatura_terreno = value
     }
     if (name == "HT") {
@@ -26,19 +26,19 @@ radio.onReceivedValue(function (name, value) {
         Umidita_terreno = value
     }
     if (name == "VV") {
-        Valore_1 = "VEL: " + value + " km/h"
+        Valore_1 = "VEL: " + value + " km/h "
         Velocita_vento = value
     }
     if (name == "PR") {
-        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 8) + " hPa"
+        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 8) + " hPa "
         Pressione = value
     }
     if (name == "TA") {
-        Valore_2 = "ARIA: " + value + " C"
+        Valore_2 = "ARIA: " + value + " C "
         Temperatura_aria = value
     }
     if (name == "HA") {
-        Valore_2 = "ARIA: " + value + "%"
+        Valore_2 = "ARIA: " + value + "% "
         Umidita_aria = value
     }
     if (name == "PI") {
@@ -101,36 +101,44 @@ input.onButtonPressed(Button.B, function () {
     led.plot(0, 2)
     basic.pause(200)
     led.unplot(0, 2)
-    if (Timestamp == 0) {
+    if (Posizione != 4) {
+        if (Timestamp == 0) {
+            Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
+            basic.pause(1000)
+            Posizione -= 1
+        } else {
+            if (Timestamp >= 120) {
+                Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento " + Math.round(Timestamp / 60) + " minuti fa")
+            } else if (Timestamp < 60) {
+                Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento " + Timestamp + " secondi fa")
+            } else {
+                Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento 1 minuto fa")
+            }
+        }
+    }
+    if (Posizione == 4 && Valore_1 == "" && Valore_2 == "") {
         Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
         basic.pause(1000)
         Posizione -= 1
-        Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
-    } else {
-        if (Timestamp >= 120) {
-            Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento " + Math.round(Timestamp / 60) + " minuti fa")
-        } else if (Timestamp < 60) {
-            Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento " + Timestamp + " secondi fa")
-        } else {
-            Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento 1 minuto fa")
-        }
-        basic.pause(500)
-        Kitronik_VIEWTEXT32.clearDisplay()
-        Timestamp = 0
-        basic.pause(500)
-        if (Posizione == 4) {
-            Kitronik_VIEWTEXT32.showString(Valore_1 + Direzione_vento)
-        } else if (Posizione == 3) {
-            Kitronik_VIEWTEXT32.showString(Valore_1)
-        } else if (Posizione == 0) {
-            Kitronik_VIEWTEXT32.showString(Valore_1)
-        } else {
-            Kitronik_VIEWTEXT32.showString(Valore_1 + Valore_2)
-        }
-        basic.pause(5000)
-        Valore_1 = ""
-        Valore_2 = ""
     }
+    basic.pause(500)
+    Kitronik_VIEWTEXT32.clearDisplay()
+    basic.pause(500)
+    if (Posizione == 4) {
+        Kitronik_VIEWTEXT32.showString(Valore_1 + Direzione_vento)
+    } else if (Posizione == 3) {
+        Kitronik_VIEWTEXT32.showString(Valore_1)
+    } else if (Posizione == 0) {
+        Kitronik_VIEWTEXT32.showString(Valore_1)
+    } else {
+        Kitronik_VIEWTEXT32.showString(Valore_1 + Valore_2)
+    }
+    if (Timestamp == 0) {
+        Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
+    }
+    Valore_1 = ""
+    Valore_2 = ""
+    Timestamp = 0
 })
 let Pioggia_caduta = 0
 let Umidita_aria = 0
