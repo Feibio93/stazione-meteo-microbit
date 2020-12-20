@@ -181,7 +181,6 @@ basic.clearScreen()
 led.enable(false)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
-    weatherbit.startWindMonitoring()
     Temperatura_aria.push(weatherbit.temperature() / 100)
     if (convertToText(Temperatura_aria[Temperatura_aria.length - 1]) == "NaN") {
         Temperatura_aria.pop()
@@ -222,6 +221,7 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    weatherbit.startWindMonitoring()
     Velocita_vento.push(Math.round(weatherbit.windSpeed() * 1.60934 * 100) / 100)
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
