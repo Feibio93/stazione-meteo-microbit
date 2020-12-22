@@ -10,7 +10,7 @@ function Media_velocita_vento (Inizio: number, Fine: number) {
     for (let i = Inizio; i < Fine; i++) {
         Vento = Vento + Velocita_vento[i]
     }
-    Vento = Vento / Fine
+    Vento = (Math.round((Vento / Fine) * 100)) / 100
     Velocita_vento = []
     Salva_velocita_vento.push(Vento)
     Vento = 0
