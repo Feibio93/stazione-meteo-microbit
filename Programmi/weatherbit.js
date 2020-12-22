@@ -10,7 +10,7 @@ function Media_velocita_vento (Inizio: number, Fine: number) {
     for (let i = Inizio; i < Fine; i++) {
         Vento = Vento + Velocita_vento[i]
     }
-    Vento = Vento / (Fine + 1)
+    Vento = Vento / Fine
     Velocita_vento = []
     Salva_velocita_vento.push(Vento)
     Vento = 0
@@ -230,8 +230,8 @@ basic.forever(function () {
     }
     Contatore_vento += 1
     if (Contatore_vento == 150) {
-        Media_velocita_vento(0, Velocita_vento.length - 1)
-        Media_direzione_vento(0, Direzione_vento.length - 1)
+        Media_velocita_vento(0, Velocita_vento.length)
+        Media_direzione_vento(0, Direzione_vento.length)
         Contatore_vento = 0
     }
     basic.pause(2000)
