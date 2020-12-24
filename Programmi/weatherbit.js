@@ -10,7 +10,7 @@ function Media_velocita_vento (Inizio: number, Fine: number) {
     for (let i = Inizio; i < Fine; i++) {
         Vento = Vento + Velocita_vento[i]
     }
-    Vento = (Math.round((Vento / Fine) * 100)) / 100
+    Vento = Arrotonda_2_decimali(Vento / Fine)
     Velocita_vento = []
     Salva_velocita_vento.push(Vento)
     Vento = 0
@@ -85,6 +85,9 @@ function Salva_su_scheda_SD () {
 	        serial.writeValue("Pioggia caduta", Pioggia_caduta[i])
         }
     }
+}
+function Arrotonda_2_decimali(Numero:number)  {
+    return Math.round(Numero * 100) / 100
 }
 radio.onReceivedMessage(RadioMessage.Umidita, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
@@ -191,23 +194,23 @@ basic.forever(function () {
     if (convertToText(Umidita_aria[Umidita_aria.length - 1]) == "NaN") {
         Umidita_aria.pop()
     }
-    Pressione.push(weatherbit.pressure() / 256)
+    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256))
     if (convertToText(Pressione[Pressione.length - 1]) == "NaN") {
         Pressione.pop()
     }
-    if (convertToText(Pressione[Pressione.length - 1]).length > 8) {
-        Pressione.insertAt(Pressione.length - 1, Math.round(Pressione[Pressione.length - 1] * 100) / 10000)
-    }
     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN") {
+     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
+     while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
      Temperatura_terreno.pop()
+     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
+     }
     }
     Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
         Umidita_terreno.pop()
     }
     weatherbit.startRainMonitoring()
-    Pioggia_caduta.push(Math.round(weatherbit.rain() * 25.4))
+    Pioggia_caduta.push(Arrotonda_2_decimali(weatherbit.rain() * 25.4))
     if (Pioggia_caduta[Pioggia_caduta.length() - 1] == 0) {
         Pioggia_caduta.pop()
     }
@@ -220,7 +223,7 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    Velocita_vento.push(Math.round(weatherbit.windSpeed() * 1.60934 * 100) / 100)
+    Velocita_vento.push(Arrotonda_2_decimali(weatherbit.windSpeed() * 1.60934))
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
     }
