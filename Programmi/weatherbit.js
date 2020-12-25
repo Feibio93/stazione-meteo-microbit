@@ -193,7 +193,7 @@ basic.forever(function () {
     if (convertToText(Umidita_aria[Umidita_aria.length - 1]) == "NaN") {
         Umidita_aria.pop()
     }
-    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256))
+    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256) / 100)
     if (convertToText(Pressione[Pressione.length - 1]) == "NaN") {
         Pressione.pop()
     }
