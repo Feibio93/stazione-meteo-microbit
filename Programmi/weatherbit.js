@@ -130,7 +130,7 @@ radio.onReceivedMessage(RadioMessage.Temperatura, function () {
 radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
     if (Contatore > 0) {
         radio.sendValue("TTTS", Temperatura_terreno[Temperatura_terreno.length - 1])
-        basic.pause(500)
+        basic.pause(200)
         radio.sendValue("TATS", Temperatura_aria[Temperatura_aria.length - 1])
         basic.pause(200)
         radio.sendValue("HTTS", Umidita_terreno[Umidita_terreno.length - 1])
@@ -185,7 +185,6 @@ basic.clearScreen()
 led.enable(false)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
-    weatherbit.startWindMonitoring()
     Temperatura_aria.push(weatherbit.temperature() / 100)
     if (convertToText(Temperatura_aria[Temperatura_aria.length - 1]) == "NaN") {
         Temperatura_aria.pop()
@@ -223,6 +222,7 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    weatherbit.startWindMonitoring()
     Velocita_vento.push(Arrotonda_2_decimali(weatherbit.windSpeed() * 1.60934))
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
