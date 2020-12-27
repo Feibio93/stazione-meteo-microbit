@@ -19,34 +19,27 @@ radio.onReceivedString(function (receivedString) {
 radio.onReceivedValue(function (name, value) {
     if (name == "TT") {
         Valore_1 = "TERRA: " + value + " C "
-        Temperatura_terreno = value
     }
     if (name == "HT") {
         Valore_1 = "TERRA: " + value + "%    "
-        Umidita_terreno = value
     }
     if (name == "VV") {
         Valore_1 = "VEL: " + value + " km/h "
-        Velocita_vento = value
     }
     if (name == "PR") {
-        Valore_1 = "PRESSIONE: " + convertToText(value).substr(0, 8) + " hPa "
-        Pressione = value
+        Valore_1 = "PRESSIONE: " + value + " hPa "
     }
     if (name == "TA") {
         Valore_2 = "ARIA: " + value + " C "
-        Temperatura_aria = value
     }
     if (name == "HA") {
         Valore_2 = "ARIA: " + value + "% "
-        Umidita_aria = value
     }
     if (name == "PI") {
         if (value == 0) {
             Valore_1 = "...non piove!"
         } else {
             Valore_1 = "PIOGGIA CADUTA: " + value + " millimetri"
-            Pioggia_caduta = value
         }
     }
 })
@@ -104,8 +97,6 @@ input.onButtonPressed(Button.B, function () {
     if (Posizione != 4) {
         if (Timestamp == 0) {
             Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
-            basic.pause(1000)
-            Posizione -= 1
         } else {
             if (Timestamp >= 120) {
                 Kitronik_VIEWTEXT32.showString("Ultimo aggiornamento " + Math.round(Timestamp / 60) + " minuti fa")
@@ -116,37 +107,37 @@ input.onButtonPressed(Button.B, function () {
             }
         }
     }
-    if (Posizione == 4 && Valore_1 == "" && Valore_2 == "") {
-        Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
-        basic.pause(1000)
-        Posizione -= 1
-    }
-    basic.pause(500)
-    Kitronik_VIEWTEXT32.clearDisplay()
-    basic.pause(500)
     if (Posizione == 4) {
-        Kitronik_VIEWTEXT32.showString(Valore_1 + Direzione_vento)
-    } else if (Posizione == 3) {
-        Kitronik_VIEWTEXT32.showString(Valore_1)
-    } else if (Posizione == 0) {
-        Kitronik_VIEWTEXT32.showString(Valore_1)
+        if (Valore_1 == "" && Valore_2 == "") {
+            Kitronik_VIEWTEXT32.showString("Connessione con la stazione non riuscita. Riprova.")
+            basic.pause(500)
+            Kitronik_VIEWTEXT32.clearDisplay()
+        } else {
+            Kitronik_VIEWTEXT32.showString(Valore_1 + Direzione_vento)
+            Posizione += 1
+        }
     } else {
-        Kitronik_VIEWTEXT32.showString(Valore_1 + Valore_2)
+        basic.pause(500)
+        Kitronik_VIEWTEXT32.clearDisplay()
+        basic.pause(500)
     }
-    if (Timestamp == 0) {
-        Kitronik_VIEWTEXT32.showString("A -> SELEZIONA  B -> CONFERMA")
+    if (Timestamp != 0) {
+        if (Posizione == 0 || Posizione == 3) {
+            Kitronik_VIEWTEXT32.showString(Valore_1)
+        } else {
+            Kitronik_VIEWTEXT32.showString(Valore_1 + Valore_2)
+        }
+    } else {
+        if (Posizione == 0) {
+                Posizione = 4
+            } else {
+                Posizione -= 1
+            }
     }
     Valore_1 = ""
     Valore_2 = ""
     Timestamp = 0
 })
-let Pioggia_caduta = 0
-let Umidita_aria = 0
-let Temperatura_aria = 0
-let Pressione = 0
-let Velocita_vento = 0
-let Umidita_terreno = 0
-let Temperatura_terreno = 0
 let Valore_2 = ""
 let Valore_1 = ""
 let Direzione_vento = ""
