@@ -119,7 +119,7 @@ basic.forever(function () {
         }
     } else {
         basic.showIcon(IconNames.No)
-        ESP8266_IoT.connectWifi("WiFi EOLO", "")
+        ESP8266_IoT.connectWifi("WiFi SSID", "WiFi password")
         basic.clearScreen()
     }
 })
