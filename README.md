@@ -12,4 +12,5 @@ MakeCode: https://makecode.microbit.org/
 ThingSpeak: https://thingspeak.com/  
 E' possibile caricare i dati su un foglio Google, importando in CSV, XML o JSON (https://docs.google.com/spreadsheets/d/1ulGx2U55H57l_hdenD3Ycy1FpE15B4GlDhakmj_BqAk/edit?usp=sharing)
 
-Stazione creata principalmente a scopo didattico, l'obiettivo non è la qualità ma la semplicità, e quindi la possibilità di replicare questo progetto in una scuola media o superiore, con l'obiettivo di sviluppare moltissime competenge digitali e trasversali negli alunni, spaziando dalla fisica alla metereologia, dalla matematica alla programmazione, dall'elettronica agli open data, passando per la creazione di grafici e rielaborazione e confronto dei dati.
+Stazione creata principalmente a scopo didattico, l'obiettivo non è la qualità ma la semplicità, e quindi la possibilità di replicare questo progetto in una scuola media o superiore, con l'obiettivo di sviluppare moltissime competenze digitali e trasversali negli alunni, spaziando dalla fisica alla metereologia, dalla matematica alla programmazione, dall'elettronica agli open data, passando per la creazione di grafici e rielaborazione e confronto dei dati.
+Un'ulteriore step potrebbe essere la creazione di un sito web dove embeddare i grafici di ThingSpeak (il frame JavaScript è già disponibile per ogni grafico)
