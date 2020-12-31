@@ -1,6 +1,6 @@
 /*Il programma mostra i dati ricevuti sul display LCD. Tramite il bottone A della microbit è possibile scorrere tra i tipi di dati che si vogliono sapere,
 il bottone B invia la richiesta e stampa sul display i secondi/minuti dall'ultimo aggiornamento e il valore ricevuto.*/
-
+//Prima di iniziare va aggiunta l'estensione 'VIEWTEXT'
 enum RadioMessage {
     Vento = 8497,
     Umidita = 13399,
