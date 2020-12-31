@@ -3,7 +3,7 @@
 enum RadioMessage {
     Thingspeak = 55204
 }
-input.onButtonPressed(Button.A, function () {  //Uso il bottone A per verificare la corretta ricezione dei dati
+input.onButtonPressed(Button.A, function () {  //Usa il bottone A per verificare la corretta ricezione dei dati
     basic.showNumber(Temperatura_aria)
     basic.pause(500)
     basic.showNumber(Umidita_aria)
@@ -14,7 +14,7 @@ input.onButtonPressed(Button.A, function () {  //Uso il bottone A per verificare
     basic.pause(500)
     basic.clearScreen()
 })
-radio.onReceivedValue(function (name, value) {  //Salvo i valori ricevuti dalla microbit sulla stazione meteo (programma 'weatherbit.js')
+radio.onReceivedValue(function (name, value) {  //Salva i valori ricevuti dalla microbit sulla stazione meteo (programma 'weatherbit.js')
     if (name == "TTTS") {
         Temperatura_terreno = value
     }
@@ -57,7 +57,7 @@ Umidita_terreno = 8888
 Velocita_vento = 8888
 Pioggia_caduta = 8888
 basic.forever(function () {
-    if (ESP8266_IoT.wifiState(true)) {  //Se è connessa alla rete WiFi mostra il 'tick' e va avanti, altrimenti mostro la X e prova nuovamente a connettersi
+    if (ESP8266_IoT.wifiState(true)) {  //Se è connessa alla rete WiFi mostra il 'tick' e va avanti, altrimenti mostra la X e prova nuovamente a connettersi
         basic.showIcon(IconNames.Yes)  
         ESP8266_IoT.connectThingSpeak()
         basic.pause(500)
@@ -66,7 +66,7 @@ basic.forever(function () {
             radio.sendMessage(RadioMessage.Thingspeak)
             basic.pause(2000)
             while (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888)))) { 
-                radio.sendMessage(RadioMessage.Thingspeak)  //Mostro un'animazione di caricamento e invio il messaggio finchè non ho preso tutti i dati dalla stazione meteo
+                radio.sendMessage(RadioMessage.Thingspeak)  //Mostra un'animazione di caricamento e invia il messaggio finchè non ha preso tutti i dati dalla stazione meteo
                 images.createImage(`
                     . . . . .
                     . . . . #
@@ -77,7 +77,7 @@ basic.forever(function () {
                 basic.pause(2000)
             } 
             if (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
-                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invio anche il dato sulla quantità di pioggia caduta
+                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invia anche il dato sulla quantità di pioggia caduta
                     ESP8266_IoT.setData(
                     "V86IPBJF1RRLAVR5",
                     Temperatura_aria,
@@ -98,18 +98,18 @@ basic.forever(function () {
                     )
                 }
                 basic.pause(100)
-                ESP8266_IoT.uploadData() //carico i dati su ThingSpeak
-                if (ESP8266_IoT.tsLastUploadState(true)) { //Se sono stati caricati correttamente, mostro la faccina felice, altrimenti mostro la faccina triste
+                ESP8266_IoT.uploadData() //carica i dati su ThingSpeak
+                if (ESP8266_IoT.tsLastUploadState(true)) { //Se sono stati caricati correttamente, mostra la faccina felice, altrimenti mostra la faccina triste
                     basic.showIcon(IconNames.Happy)
                     basic.pause(2000)
-                    basic.clearScreen()  //Ripristino le variabili al valore di default
+                    basic.clearScreen()  //Ripristina le variabili al valore di default
                     Pressione = 8888
                     Temperatura_aria = 8888
                     Umidita_aria = 8888
                     Umidita_terreno = 8888
                     Velocita_vento = 8888
                     Pioggia_caduta = 8888
-                    basic.pause(1800000)  //Aspetto mezz'ora prima di caricare nuovi dati
+                    basic.pause(1800000)  //Aspetta mezz'ora prima di caricare nuovi dati
                 } else {
                     basic.showIcon(IconNames.Sad)
                     basic.pause(2000)
