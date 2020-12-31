@@ -1,7 +1,9 @@
+//Programma da caricare nella microbit inserita nell'estensione 'WiFi:bit', per il caricamento dei dati della stazione sulla piattaforma ThingSpeak
+
 enum RadioMessage {
     Thingspeak = 55204
 }
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function () {  //Uso il bottone A per verificare la corretta ricezione dei dati
     basic.showNumber(Temperatura_aria)
     basic.pause(500)
     basic.showNumber(Umidita_aria)
@@ -12,7 +14,7 @@ input.onButtonPressed(Button.A, function () {
     basic.pause(500)
     basic.clearScreen()
 })
-radio.onReceivedValue(function (name, value) {
+radio.onReceivedValue(function (name, value) {  //Salvo i valori ricevuti dalla microbit sulla stazione meteo (programma 'weatherbit.js')
     if (name == "TTTS") {
         Temperatura_terreno = value
     }
@@ -43,11 +45,11 @@ let Temperatura_terreno = 0
 let Temperatura_aria = 0
 let Pressione = 0
 WiFiBit.connectToWiFiBit()
-ESP8266_IoT.connectWifi("WiFi EOLO", "")
+ESP8266_IoT.connectWifi("WiFi SSID", "WiFi Password") //Inserire nome e password della rete WiFi 
 led.setBrightness(10)
 radio.setGroup(93)
 radio.setTransmitPower(7)
-Pressione = 8888
+Pressione = 8888 //I valori 8888 vengono usati come valori di default
 Temperatura_aria = 8888
 Temperatura_terreno = 8888
 Umidita_aria = 8888
@@ -55,16 +57,16 @@ Umidita_terreno = 8888
 Velocita_vento = 8888
 Pioggia_caduta = 8888
 basic.forever(function () {
-    if (ESP8266_IoT.wifiState(true)) {
-        basic.showIcon(IconNames.Yes)
+    if (ESP8266_IoT.wifiState(true)) {  //Se è connessa alla rete WiFi mostra il 'tick' e va avanti, altrimenti mostro la X e prova nuovamente a connettersi
+        basic.showIcon(IconNames.Yes)  
         ESP8266_IoT.connectThingSpeak()
         basic.pause(500)
-        if (ESP8266_IoT.thingSpeakState(true)) {
+        if (ESP8266_IoT.thingSpeakState(true)) {  //Se si è connessa alla piattaforma ThingSpeak mostra il cuore e va avanti
             basic.showIcon(IconNames.Heart)
             radio.sendMessage(RadioMessage.Thingspeak)
             basic.pause(2000)
-            while (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888)))) {
-                radio.sendMessage(RadioMessage.Thingspeak)
+            while (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888)))) { 
+                radio.sendMessage(RadioMessage.Thingspeak)  //Mostro un'animazione di caricamento e invio il messaggio finchè non ho preso tutti i dati dalla stazione meteo
                 images.createImage(`
                     . . . . .
                     . . . . #
@@ -73,9 +75,9 @@ basic.forever(function () {
                     . . . . .
                     `).scrollImage(1, 200)
                 basic.pause(2000)
-            }
+            } 
             if (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
-                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {
+                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invio anche il dato sulla quantità di pioggia caduta
                     ESP8266_IoT.setData(
                     "V86IPBJF1RRLAVR5",
                     Temperatura_aria,
@@ -96,11 +98,11 @@ basic.forever(function () {
                     )
                 }
                 basic.pause(100)
-                ESP8266_IoT.uploadData()
-                if (ESP8266_IoT.tsLastUploadState(true)) {
+                ESP8266_IoT.uploadData() //carico i dati su ThingSpeak
+                if (ESP8266_IoT.tsLastUploadState(true)) { //Se sono stati caricati correttamente, mostro la faccina felice, altrimenti mostro la faccina triste
                     basic.showIcon(IconNames.Happy)
                     basic.pause(2000)
-                    basic.clearScreen()
+                    basic.clearScreen()  //Ripristino le variabili al valore di default
                     Pressione = 8888
                     Temperatura_aria = 8888
                     Umidita_aria = 8888
