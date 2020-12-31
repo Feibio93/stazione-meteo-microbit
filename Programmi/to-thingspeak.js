@@ -109,7 +109,7 @@ basic.forever(function () {
                     Umidita_terreno = 8888
                     Velocita_vento = 8888
                     Pioggia_caduta = 8888
-                    basic.pause(1800000)
+                    basic.pause(1800000)  //Aspetto mezz'ora prima di caricare nuovi dati
                 } else {
                     basic.showIcon(IconNames.Sad)
                     basic.pause(2000)
