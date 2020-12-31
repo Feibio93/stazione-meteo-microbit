@@ -45,7 +45,7 @@ let Temperatura_terreno = 0
 let Temperatura_aria = 0
 let Pressione = 0
 WiFiBit.connectToWiFiBit()
-ESP8266_IoT.connectWifi("WiFi SSID", "WiFi Password") //Inserire nome e password della rete WiFi 
+ESP8266_IoT.connectWifi("WiFi SSID", "WiFi password") //Inserire nome e password della rete WiFi 
 led.setBrightness(10)
 radio.setGroup(93)
 radio.setTransmitPower(7)
