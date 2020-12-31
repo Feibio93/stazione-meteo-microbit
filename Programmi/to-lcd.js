@@ -121,7 +121,7 @@ input.onButtonPressed(Button.B, function () {  //Il bottone B è il bottone di c
         Kitronik_VIEWTEXT32.clearDisplay()
         basic.pause(500)
     }
-    if (Timestamp != 0) {  // Se il timestamp è diverso da 0 vuol dire che ha ricevuto i dati, quindi li mostra. Se la posizione è su temperatura o pressione, mostra solo 1 dato
+    if (Timestamp != 0) { //Se il timestamp è diverso da 0 vuol dire che ha ricevuto i dati, quindi li mostra. Se la posizione è su temperatura o pressione, mostra solo 1 dato
         if (Posizione == 0 || Posizione == 3) {
             Kitronik_VIEWTEXT32.showString(Valore_1)
         } else {
