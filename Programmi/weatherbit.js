@@ -1,4 +1,7 @@
-enum RadioMessage {
+//Programma per la micro:bit da inserire nel modulo di SparkFun. Monitora la temperatura dell'aria, l'umidità dell'aria e del terreno, la velocità e la direzione del vento,
+//e la quantità di pioggia caduta. Ci sono alcuni problemi nella libreria di SparkFun per quanto riguarda il sensore DS18B20 per la misurazione della temperatura del terreno.
+
+enum RadioMessage { //Per usare nomi invece di cifre nei messaggi radio
     Vento = 8497,
     Umidita = 13399,
     Pressione = 14277,
@@ -6,7 +9,7 @@ enum RadioMessage {
     Thingspeak = 55204,
     Pioggia = 58249
 }
-function Media_velocita_vento (Inizio: number, Fine: number) {
+function Media_velocita_vento (Inizio: number, Fine: number) { //Calcola la media della velocità del vento rilevata, la arrotonda a 2 decimali e salva il valore trovato
     for (let i = Inizio; i < Fine; i++) {
         Vento = Vento + Velocita_vento[i]
     }
@@ -15,10 +18,10 @@ function Media_velocita_vento (Inizio: number, Fine: number) {
     Salva_velocita_vento.push(Vento)
     Vento = 0
 }
-function Media_direzione_vento (Inizio: number, Fine: number) {
+function Media_direzione_vento (Inizio: number, Fine: number) {  //Come sopra, ma per quanto riguarda la direzione del vento
     for (let i = Inizio; i < Fine; i++) {
         Conta_direzioni_vento = [0, 0, 0, 0, 0, 0, 0, 0] // N S E W NE NW SE SW
-        switch (Direzione_vento[i]) {
+        switch (Direzione_vento[i]) {                    //In base alla direzione letta, imposto l'indice in cui devo incrementare il contatore
             case "N": Indice = 0
             case "S": Indice = 1
             case "E": Indice = 2
@@ -28,15 +31,15 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
             case "SE": Indice = 6
             case "SW": Indice = 7
         }
-        Conta_direzioni_vento.insertAt(Indice, Conta_direzioni_vento[Indice] + 1)
+        Conta_direzioni_vento.insertAt(Indice, Conta_direzioni_vento[Indice] + 1)  //Incremento di 1 il contatore della direzione corrispondente all'indice trovato
     }
     Indice = Conta_direzioni_vento[0]
     for (let i = 1; i <= 7; i++) {
         if (Conta_direzioni_vento[i] > Indice) {
-            Indice = Conta_direzioni_vento[i]
+            Indice = Conta_direzioni_vento[i]    //Trovo l'indice corrispondente al valore più alto tra i contatori delle varie direzioni
         }
     }
-    Indice = Conta_direzioni_vento.indexOf(Indice)
+    Indice = Conta_direzioni_vento.indexOf(Indice)  //Imposto l'indice al valore più alto trovato e determino la direzione corrispondente, che scrivo in una variabile
     switch (Indice) {
         case 0: Dato_direzione_vento = "N"
         case 1: Dato_direzione_vento = "S"
@@ -48,9 +51,9 @@ function Media_direzione_vento (Inizio: number, Fine: number) {
         case 7: Dato_direzione_vento = "SW"
     }
     Direzione_vento = []
-    Salva_direzione_vento.push(Dato_direzione_vento)
+    Salva_direzione_vento.push(Dato_direzione_vento)  //Salvo la variabile in un array
 }
-function Azzera_array () {
+function Azzera_array () {  //Questa funzione viene eseguita ogni 24 ore, e serve a liberare gli array dai dati, onde evitare un overflow, previo salvataggio sulla scheda SD
     Salva_su_scheda_SD()
     Pioggia_caduta = []
     Pressione = []
@@ -61,7 +64,7 @@ function Azzera_array () {
     Salva_direzione_vento = []
     Salva_velocita_vento = []
 }
-function Salva_su_scheda_SD () {
+function Salva_su_scheda_SD () {  //Salva tutti i valori di tutti gli array nella scheda.
     for (let i=0; i < Temperatura_aria.length()-1; i++) {
 	    serial.writeValue("Temperatura aria", Temperatura_aria[i])
     }
@@ -86,18 +89,18 @@ function Salva_su_scheda_SD () {
         }
     }
 }
-function Arrotonda_2_decimali(Numero:number)  {
+function Arrotonda_2_decimali(Numero:number)  {  //Funzione per rendere i numeri più leggibili e eliminare le cifre meno significative dopo la virgola
     return Math.round(Numero * 100) / 100
 }
-radio.onReceivedMessage(RadioMessage.Umidita, function () {
-    Tempo = Math.round(control.millis() / 1000 - Timestamp)
+radio.onReceivedMessage(RadioMessage.Umidita, function () {  //Per ogni messaggio radio ricevuto dal display LCD (programma "to-lcd") invio il tempo trascorso dall'ultimo
+    Tempo = Math.round(control.millis() / 1000 - Timestamp)  //aggiornamento e il dato richiesto
     radio.sendNumber(Tempo)
     basic.pause(200)
     radio.sendValue("HT", Umidita_terreno[Umidita_terreno.length - 1])
     basic.pause(200)
     radio.sendValue("HA", Umidita_aria[Umidita_aria.length - 1])
 })
-radio.onReceivedMessage(RadioMessage.Vento, function () {
+radio.onReceivedMessage(RadioMessage.Vento, function () {  //Per quanto riguarda il vento non invio il tempo, in quanto il dato viene aggiornato ogni 2 secondi
     basic.pause(200)
     radio.sendValue("VV", Velocita_vento[Velocita_vento.length - 1])
     basic.pause(200)
@@ -113,7 +116,7 @@ radio.onReceivedMessage(RadioMessage.Pioggia, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
     radio.sendNumber(Tempo)
     basic.pause(200)
-    if (Pioggia_caduta.length == 0) {
+    if (Pioggia_caduta.length == 0) { //Se non piove l'array è vuoto, quindi invio 0
         radio.sendValue("PI", 0)
     } else {
         radio.sendValue("PI", Pioggia_caduta[Pioggia_caduta.length - 1])
@@ -127,8 +130,8 @@ radio.onReceivedMessage(RadioMessage.Temperatura, function () {
     basic.pause(100)
     radio.sendValue("TA", Temperatura_aria[Temperatura_aria.length - 1])
 })
-radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
-    if (Contatore > 0) {
+radio.onReceivedMessage(RadioMessage.Thingspeak, function () {  //Messaggio che ricevo dal programma "to-thingspeak" per il caricamento dei dati in Internet,
+    if (Contatore > 0) {                                        //ogni 2 decimi di secondo invio tutti gli ultimi dati rilevati
         radio.sendValue("TTTS", Temperatura_terreno[Temperatura_terreno.length - 1])
         basic.pause(200)
         radio.sendValue("TATS", Temperatura_aria[Temperatura_aria.length - 1])
@@ -141,12 +144,12 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
         basic.pause(200)
         radio.sendValue("VVTS", Salva_velocita_vento[Salva_velocita_vento.length - 1])
         basic.pause(200)
-        if (Pioggia_caduta[Pioggia_caduta.length - 1] > 0) {
+        if (Pioggia_caduta[Pioggia_caduta.length - 1] != 0 && Pioggia_caduta.lenght > 0) {   //Se non piove... perchè inviare il dato?
             radio.sendValue("PITS", Pioggia_caduta[Pioggia_caduta.length - 1])
-        }
+        } 
     }
 })
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function () {  //Uso il bottone A della microbit per sapere da quanti giorni la stazione meteo è in esecuzione
     led.enable(true)
     basic.showString("In esecuzione da " + Math.round(((control.millis() / 1000) / 3600) / 24) + " giorni")
     basic.clearScreen()
@@ -170,53 +173,53 @@ let Temperatura_terreno: number[] = []
 let Umidita_aria: number[] = []
 let Temperatura_aria: number[] = []
 let Pioggia_caduta: number[] = []
-radio.setTransmitPower(7)
-radio.setGroup(93)
-serial.redirect(SerialPin.P15, SerialPin.P14, 9600)
+radio.setTransmitPower(7)  //Inizializzo la potenza dell'antenna radio al massimo, in modo da garantire la comunicaizone radio entro 30-50 metri
+radio.setGroup(93)  //Il canale dovrà essere egualmente impostato in tutte le altre microbit coinvolte
+serial.redirect(SerialPin.P15, SerialPin.P14, 9600)  //I pin 14 e 15 sono dedicati al salvataggio sulla scheda SD
 basic.showIcon(IconNames.Happy)
 basic.clearScreen()
 led.enable(false)
 basic.forever(function () {
     weatherbit.startWeatherMonitoring()
-    Temperatura_aria.push(weatherbit.temperature() / 100)
+    Temperatura_aria.push(weatherbit.temperature() / 100)  //Divido per 100 per trovare la temperatura in gradi Celsius
     if (convertToText(Temperatura_aria[Temperatura_aria.length - 1]) == "NaN") {
         Temperatura_aria.pop()
     }
-    Umidita_aria.push(Math.round(weatherbit.humidity() / 1024))
+    Umidita_aria.push(Math.round(weatherbit.humidity() / 1024)) //Divido per 1024 per trovare l'umidità in percentuale
     if (convertToText(Umidita_aria[Umidita_aria.length - 1]) == "NaN") {
         Umidita_aria.pop()
     }
-    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256) / 100)
+    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256) / 100)  //Divido per 256 per trovare la misura in Pa, poi per 100 per trovare gli hPa corrispondenti
     if (convertToText(Pressione[Pressione.length - 1]) == "NaN") {
         Pressione.pop()
     }
-    Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
+    Temperatura_terreno.push(weatherbit.soilTemperature() / 100)  
      if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
      while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
      Temperatura_terreno.pop()
      Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
      }
     }
-    Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))
+    Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))  //Mappo il valore analogico in ingresso per trovare la relativa percentuale
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
         Umidita_terreno.pop()
     }
     weatherbit.startRainMonitoring()
-    Pioggia_caduta.push(Arrotonda_2_decimali(weatherbit.rain() * 25.4))
-    if (Pioggia_caduta[Pioggia_caduta.length() - 1] == 0) {
-        Pioggia_caduta.pop()
+    Pioggia_caduta.push(Arrotonda_2_decimali(weatherbit.rain() * 25.4))  //Salvo comunque il valore
+    if (Pioggia_caduta[Pioggia_caduta.length() - 1] == 0) {              //Ma se è uguale a 0, significa che non piove...
+        Pioggia_caduta.pop()                                             //...quindi lo tolgo!
     }
-    Timestamp = Math.round(control.millis() / 1000)
-    basic.pause(300000)
+    Timestamp = Math.round(control.millis() / 1000)  //Salvo il timestamp degli ultimi rilevamenti effettuati
+    basic.pause(300000)         //Aspetto 5 minuti prima di effettuare nuovi rilevamenti
     Contatore += 1
-    if (Contatore == 17280) {
+    if (Contatore == 17280) {   //Ogni 24 ore chiamo la funzione per salvare i dati della giornata e azzerare tutto
         Contatore = 0
         Azzera_array()
     }
 })
-basic.forever(function () {
+basic.forever(function () {  //Funzione dedicata solamente al monitoraggio del vento, che avviene ogni 2 secondi per garantire più precisione e completezza dei dati
     weatherbit.startWindMonitoring()
-    Velocita_vento.push(Arrotonda_2_decimali(weatherbit.windSpeed() * 1.60934))
+    Velocita_vento.push(Arrotonda_2_decimali(weatherbit.windSpeed() * 1.60934))  //Converto la velocità da MPH in KMH e la arrotondo
     if (convertToText(Velocita_vento[Velocita_vento.length - 1]) == "NaN") {
         Velocita_vento.pop()
     }
@@ -225,7 +228,7 @@ basic.forever(function () {
         Direzione_vento.pop()
     }
     Contatore_vento += 1
-    if (Contatore_vento == 150) {
+    if (Contatore_vento == 150) {  //Ogni 5 minuti, calcolo la media della velocità e della direzione
         Media_velocita_vento(0, Velocita_vento.length)
         Media_direzione_vento(0, Direzione_vento.length)
         Contatore_vento = 0
