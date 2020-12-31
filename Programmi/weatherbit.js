@@ -148,14 +148,7 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {
 })
 input.onButtonPressed(Button.A, function () {
     led.enable(true)
-    basic.showString("VEL VENTO:")
-    for (let i = 0; i <= Velocita_vento.length - 1; i++) {
-        basic.showNumber(Velocita_vento[i])
-    }
-    basic.showString("DIR VENTO:")
-    for (let i = 0; i <= Direzione_vento.length - 1; i++) {
-        basic.showString(Direzione_vento[i])
-    }
+    basic.showString("In esecuzione da " + Math.round(((control.millis() / 1000) / 3600) / 24) + " giorni")
     basic.clearScreen()
     led.enable(false)
 })
