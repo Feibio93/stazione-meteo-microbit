@@ -79,7 +79,7 @@ basic.forever(function () {
             if (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
                 if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invia anche il dato sulla quantità di pioggia caduta
                     ESP8266_IoT.setData(
-                    "V86IPBJF1RRLAVR5",
+                    "ThingSpeak write API",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
                     Temperatura_aria,
                     Umidita_aria,
                     Umidita_terreno,
@@ -89,7 +89,7 @@ basic.forever(function () {
                     )
                 } else {
                     ESP8266_IoT.setData(
-                    "V86IPBJF1RRLAVR5",
+                    "ThingSpeak write API",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
                     Temperatura_aria,
                     Umidita_aria,
                     Umidita_terreno,
