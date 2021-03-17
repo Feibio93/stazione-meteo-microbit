@@ -1,6 +1,8 @@
 //Programma per la micro:bit da inserire nel modulo di SparkFun. Monitora la temperatura dell'aria, l'umidità dell'aria e del terreno, la velocità e la direzione del vento,
 //e la quantità di pioggia caduta. Ci sono alcuni problemi nella libreria di SparkFun per quanto riguarda il sensore DS18B20 per la misurazione della temperatura del terreno.
 
+//Importare le librerie "weatherbit" e "radio broadcast"
+
 enum RadioMessage { //Per usare nomi invece di cifre nei messaggi radio
     Vento = 8497,
     Umidita = 13399,
