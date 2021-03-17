@@ -144,7 +144,7 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {  //Messaggio che 
         basic.pause(200)
         radio.sendValue("VVTS", Salva_velocita_vento[Salva_velocita_vento.length - 1])
         basic.pause(200)
-        if (Pioggia_caduta[Pioggia_caduta.length - 1] != 0 && Pioggia_caduta.lenght > 0) {   //Se non piove... perchè inviare il dato?
+        if (Pioggia_caduta[Pioggia_caduta.length - 1] != 0 && Pioggia_caduta.length > 0) {   //Se non piove... perchè inviare il dato?
             radio.sendValue("PITS", Pioggia_caduta[Pioggia_caduta.length - 1])
         } 
     }
