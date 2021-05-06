@@ -196,11 +196,8 @@ basic.forever(function () {
         Pressione.pop()
     }
     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)  
-     if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60)) {
-     while (Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
-     Temperatura_terreno.pop()
-     Temperatura_terreno.push(weatherbit.soilTemperature() / 100)
-     }
+    if (convertToText(Temperatura_terreno[Temperatura_terreno.length - 1]) == "NaN" || Temperatura_terreno[Temperatura_terreno.length - 1] < -20 || Temperatura_terreno[Temperatura_terreno.length - 1] > 60) {
+     	Temperatura_terreno.pop()
     }
     Umidita_terreno.push(Math.round(Math.map(weatherbit.soilMoisture(), 0, 1023, 0, 100)))  //Mappo il valore analogico in ingresso per trovare la relativa percentuale
     if (convertToText(Umidita_terreno[Umidita_terreno.length - 1]) == "NaN") {
