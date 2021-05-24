@@ -122,11 +122,7 @@ radio.onReceivedMessage(RadioMessage.Pioggia, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
     radio.sendNumber(Tempo)
     basic.pause(200)
-    if (Pioggia_caduta = 0) { //Se non piove l'array è vuoto, quindi invio 0
-        radio.sendValue("PI", 0)
-    } else {
-        radio.sendValue("PI", Pioggia_caduta)
-    }
+    radio.sendValue("PI", Pioggia_caduta)
 })
 radio.onReceivedMessage(RadioMessage.Temperatura, function () {
     Tempo = Math.round(control.millis() / 1000 - Timestamp)
