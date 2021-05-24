@@ -1,5 +1,6 @@
 //Programma da caricare nella microbit inserita nell'estensione 'WiFi:bit', per il caricamento dei dati della stazione sulla piattaforma ThingSpeak
 //Prima di iniziare, aggiungere le estensioni 'WiFi:bit' e 'IoT environment kit'
+
 enum RadioMessage {
     Thingspeak = 55204
 }
@@ -45,7 +46,7 @@ let Temperatura_terreno = 0
 let Temperatura_aria = 0
 let Pressione = 0
 WiFiBit.connectToWiFiBit()
-ESP8266_IoT.connectWifi("WiFi SSID", "WiFi password") //Inserire nome e password della rete WiFi 
+ESP8266_IoT.connectWifi("WiFi SSID", "WiFi Password") //Inserire nome e password della rete WiFi 
 led.setBrightness(10)
 radio.setGroup(93)
 radio.setTransmitPower(7)
@@ -65,7 +66,7 @@ basic.forever(function () {
             basic.showIcon(IconNames.Heart)
             radio.sendMessage(RadioMessage.Thingspeak)
             basic.pause(2000)
-            while (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || Pressione == 8888)))) { 
+            while (Temperatura_terreno == 8888 || (Temperatura_aria == 8888 || (Velocita_vento == 8888 || (Umidita_aria == 8888 || (Umidita_terreno == 8888 || (Pressione == 8888 || Pioggia_caduta == 8888)))))) { 
                 radio.sendMessage(RadioMessage.Thingspeak)  //Mostra un'animazione di caricamento e invia il messaggio finchè non ha preso tutti i dati dalla stazione meteo
                 images.createImage(`
                     . . . . .
@@ -76,10 +77,11 @@ basic.forever(function () {
                     `).scrollImage(1, 200)
                 basic.pause(2000)
             } 
-            if (!(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
+            if (!(Temperatura_terreno == 8888) && !(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
                 if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invia anche il dato sulla quantità di pioggia caduta
                     ESP8266_IoT.setData(
-                    "ThingSpeak write API",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
+                    "Write API Key",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
+                    Temperatura_terreno,
                     Temperatura_aria,
                     Umidita_aria,
                     Umidita_terreno,
@@ -89,7 +91,8 @@ basic.forever(function () {
                     )
                 } else {
                     ESP8266_IoT.setData(
-                    "ThingSpeak write API",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
+                    "Write API Key",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
+                    Temperatura_terreno,
                     Temperatura_aria,
                     Umidita_aria,
                     Umidita_terreno,
@@ -103,13 +106,14 @@ basic.forever(function () {
                     basic.showIcon(IconNames.Happy)
                     basic.pause(2000)
                     basic.clearScreen()  //Ripristina le variabili al valore di default
-                    Pressione = 8888
+                    Temperatura_terreno == 8888
                     Temperatura_aria = 8888
                     Umidita_aria = 8888
                     Umidita_terreno = 8888
                     Velocita_vento = 8888
+                    Pressione = 8888
                     Pioggia_caduta = 8888
-                    basic.pause(1800000)  //Aspetta mezz'ora prima di caricare nuovi dati
+                    ESP8266_IoT.wait(1800000)  //Aspetta mezz'ora prima di caricare nuovi dati           
                 } else {
                     basic.showIcon(IconNames.Sad)
                     basic.pause(2000)
@@ -119,7 +123,7 @@ basic.forever(function () {
         }
     } else {
         basic.showIcon(IconNames.No)
-        ESP8266_IoT.connectWifi("WiFi SSID", "WiFi password")
+        ESP8266_IoT.connectWifi("WiFi SSID", "WiFi Password") //Inserire nome e password della rete WiFi
         basic.clearScreen()
     }
 })
