@@ -13,6 +13,7 @@ input.onButtonPressed(Button.A, function () {  //Usa il bottone A per verificare
     basic.pause(500)
     basic.showNumber(Pressione)
     basic.pause(500)
+    basic.showNumber(Pioggia_caduta)
     basic.clearScreen()
 })
 radio.onReceivedValue(function (name, value) {  //Salva i valori ricevuti dalla microbit sulla stazione meteo (programma 'weatherbit.js')
