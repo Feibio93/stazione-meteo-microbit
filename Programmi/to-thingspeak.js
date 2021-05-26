@@ -78,8 +78,8 @@ basic.forever(function () {
                     `).scrollImage(1, 200)
                 basic.pause(2000)
             } 
-            if (!(Temperatura_terreno == 8888) && !(Temperatura_aria == 8888) && (!(Velocita_vento == 8888) && (!(Umidita_aria == 8888) && (!(Umidita_terreno == 8888) && !(Pressione == 8888))))) {
-                if (!(Pioggia_caduta == 8888) && !(Pioggia_caduta == 0)) {  //Se piove, invia anche il dato sulla quantità di pioggia caduta
+            if (Temperatura_terreno != 8888 && Temperatura_aria != 8888 && Velocita_vento != 8888 && Umidita_aria != 8888 && Umidita_terreno != 8888 && Pressione != 8888) {
+                if (Pioggia_caduta > 0 && Pioggia_caduta != 8888) {  //Se piove, invia anche il dato sulla quantità di pioggia caduta
                     ESP8266_IoT.setData(
                     "Write API Key",  //Inserire l'API per la scrittura dei dati, visibile su "API Key" nel canale ThingSpeak
                     Temperatura_terreno,
