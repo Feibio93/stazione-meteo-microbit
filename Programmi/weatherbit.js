@@ -3,6 +3,7 @@ e la quantità di pioggia caduta. Ci sono alcuni problemi nella libreria di Spar
 
 Importare le librerie "weatherbit" e "radio broadcast"*/
 
+
 enum RadioMessage { //Per usare nomi invece di cifre nei messaggi radio
     Vento = 8497,
     Umidita = 13399,
@@ -57,9 +58,6 @@ function Media_direzione_vento (Inizio: number, Fine: number) {  //Come sopra, m
 }
 function Azzera_array () {  //Questa funzione viene eseguita ogni 24 ore, e serve a liberare gli array dai dati, onde evitare un overflow, previo salvataggio sulla scheda SD
     Salva_su_scheda_SD()
-    if (weatherbit.rain() > Pioggia) {
-        Pioggia = weatherbit.rain()
-    }
     Temperatura_aria = []
     Temperatura_terreno = []
     Umidita_aria = []
@@ -68,6 +66,7 @@ function Azzera_array () {  //Questa funzione viene eseguita ogni 24 ore, e serv
     Salva_direzione_vento = []
     Salva_velocita_vento = []
     Pioggia_caduta = 0
+    Tot_pioggia = 0
 }
 function Salva_su_scheda_SD () {  //Salva tutti i valori di tutti gli array nella scheda.
     for (let i=0; i < Temperatura_aria.length()-1; i++) {
@@ -91,8 +90,8 @@ function Salva_su_scheda_SD () {  //Salva tutti i valori di tutti gli array nell
     for (let i=0; i < Pressione.length()-1; i++) {
 	    serial.writeValue("Pressione=", Pressione[i])
     }
-    if (Pioggia_caduta > 0) {
-	        serial.writeValue("Pioggia caduta=", Pioggia_caduta)
+    if (Tot_pioggia > 0) {
+	    serial.writeValue("Pioggia caduta=", Tot_pioggia)
     }
 }
 function Arrotonda_2_decimali(Numero:number)  {  //Funzione per rendere i numeri più leggibili e eliminare le cifre meno significative dopo la virgola
@@ -146,9 +145,7 @@ radio.onReceivedMessage(RadioMessage.Thingspeak, function () {  //Messaggio che 
         basic.pause(200)
         radio.sendValue("VVTS", Salva_velocita_vento[Salva_velocita_vento.length - 1])
         basic.pause(200)
-        if (Pioggia_caduta > 0) {   //Se non piove... perchè inviare il dato?
-            radio.sendValue("PITS", Pioggia_caduta)
-        } 
+        radio.sendValue("PITS", Tot_pioggia) 
     }
 })
 input.onButtonPressed(Button.AB, function () {  //Uso i bottoni A+B della microbit per sapere da quanti giorni la stazione meteo è in esecuzione
@@ -170,9 +167,10 @@ input.onButtonPressed(Button.A, function () {  //Uso il bottone A per impostare 
 input.onButtonPressed(Button.B, function () {  //Uso il bottone B per confermare l'ora e impostare il reset giornaliero alle 24
     Ora = 24 - Ora
     Contatore = 17280 - (Ora * 17280 / 24)  //Imposto il contatore in modo che alle 24 si azzeri
+    basic.showIcon(IconNames.Yes)
     led.enable(false)  
 })
-let Ora = 1
+let Ora = 6
 let Contatore_vento = 0
 let Contatore = 0
 let Timestamp = 0
@@ -180,7 +178,7 @@ let Tempo = 0
 let Indice = 0
 let Vento = 0
 let Pioggia_caduta = 0
-let Pioggia = 0
+let Tot_pioggia = 0
 let Dato_direzione_vento = ""
 let Conta_direzioni_vento: number[] = []
 let Salva_direzione_vento: string[] = []
@@ -221,8 +219,9 @@ basic.forever(function () {
         Umidita_terreno.pop()
     }
     weatherbit.startRainMonitoring() //Funzione dedicata solo al monitoraggio della pioggia
-    if (weatherbit.rain() - Pioggia > 0) {
-        Pioggia_caduta = (weatherbit.rain() - Pioggia)* 25.4  //Trasformo la misura da pollici a millimetri
+    if (weatherbit.rain() > 0) {
+        Pioggia_caduta = Arrotonda_2_decimali(weatherbit.rain()* 25.4)
+        Tot_pioggia = Tot_pioggia + Pioggia_caduta
     }
     Timestamp = Math.round(control.millis() / 1000)  //Salvo il timestamp degli ultimi rilevamenti effettuati
     basic.pause(300000)         //Aspetto 5 minuti prima di effettuare nuovi rilevamenti
