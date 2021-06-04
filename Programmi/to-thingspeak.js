@@ -1,5 +1,7 @@
-//Programma da caricare nella microbit inserita nell'estensione 'WiFi:bit', per il caricamento dei dati della stazione sulla piattaforma ThingSpeak
-//Prima di iniziare, aggiungere le librerie "WiFi:bit" e "IoT environment kit"
+/*Programma da caricare nella microbit inserita nell'estensione 'WiFi:bit', per il caricamento dei dati della stazione sulla piattaforma ThingSpeak
+
+Prima di iniziare, aggiungere le librerie "WiFi:bit" e "IoT environment kit"*/
+
 
 enum RadioMessage {
     Thingspeak = 55204
