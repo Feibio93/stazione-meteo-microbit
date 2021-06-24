@@ -4,7 +4,7 @@ Stazione meteo creata con il kit di Sparkfun 'weatherbit', i dati sono inviati c
 Risorse hardware utilizzate:  
 microclimate kit: https://www.sparkfun.com/products/16274  
 WiFibit: https://e-radionica.com/en/wifi-bit.html  
-2 microbit: https://www.robotics-3d.com/microbit/6024-micro-bit.html  
+3 microbit: https://www.robotics-3d.com/microbit/6024-micro-bit.html  
 Screen LCD per microbit: https://kitronik.co.uk/products/5650-view-text32-lcd-screen-for-the-bbc-micro-bit  
 Pannello solare per microbit: https://www.robotics-3d.com/pannelli-solari/7224-solar-power-manager-micro-2v-160ma-solar-panel-included.html + Batteria al Litio 3.7V da 5'000 mAh
 
