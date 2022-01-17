@@ -206,7 +206,7 @@ basic.forever(function () {
     if (convertToText(Umidita_aria[Umidita_aria.length - 1]) == "NaN") {
         Umidita_aria.pop()
     }
-    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 256))  //Divido per 25600 per trovare gli hPa corrispondenti
+    Pressione.push(Arrotonda_2_decimali(weatherbit.pressure() / 691.2))  //Divido per 691.2 per trovare gli hPa corrispondenti
     if (convertToText(Pressione[Pressione.length - 1]) == "NaN") {
         Pressione.pop()
     }
