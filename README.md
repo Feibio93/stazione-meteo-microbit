@@ -16,3 +16,5 @@ E' possibile caricare i dati su un foglio Google, importando in CSV, XML o JSON
 
 Stazione creata principalmente a scopo didattico, l'obiettivo non è la qualità ma la semplicità, e quindi la possibilità di replicare questo progetto in una scuola media o superiore, con l'obiettivo di sviluppare moltissime competenze digitali e trasversali negli alunni, spaziando dalla fisica alla metereologia, dalla matematica alla programmazione, dall'elettronica agli open data, passando per la creazione di grafici e rielaborazione e confronto dei dati.
 Un'ulteriore step potrebbe essere la creazione di un sito web dove embeddare i grafici di ThingSpeak (il frame JavaScript è già disponibile per ogni grafico)
+
+LICENZA dei programmi CC-BY 4.0
